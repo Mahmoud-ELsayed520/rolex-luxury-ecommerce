@@ -1,0 +1,191 @@
+:root {
+    --gold-primary: #c5a059;
+    --gold-hover: #dfb76c;
+    --dark-surface: #0e0e0e;
+    --border-color: #272727;
+}
+
+body {
+    margin: 0;
+    background-color: #050505;
+    font-family: 'Montserrat', sans-serif;
+    color: #f1f1f1;
+}
+
+/* عمود الصورة اليسار (ملء كامل بدون تكرار بتدرج ناعم) */
+.bg-image-col {
+    background-image: url("../sign in and up images/rich man.png");
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center center;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* طبقة ظل ناعمة تدمج الصورة مع الجانب الداكن بسلاسة */
+.image-overlay {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.1), #050505);
+}
+
+/* تنسيق قسم الفورم */
+.form-section {
+    background-color: #050505;
+}
+
+#info {
+    width: 100%;
+    max-width: 440px;
+    background: #0f0f10;
+    border: 1px solid #1f1f20;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+/* الخطوط والعناوين */
+.luxury-title {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 1.4rem;
+}
+
+.luxury-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--gold-primary);
+    font-weight: 600;
+    display: block;
+}
+
+/* عناصر الإدخال والتسميات */
+.luxury-label {
+    color: #c9c9c9;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.luxury-input {
+    background-color: #161617 !important;
+    border: 1px solid var(--border-color) ;
+    color: #ffffff !important;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    padding: 0.65rem 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.luxury-input:focus {
+    background-color: #1a1a1c !important;
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 0 10px rgba(197, 160, 89, 0.25) !important;
+}
+
+.luxury-input::placeholder {
+    color: #555555;
+    font-size: 0.85rem;
+}
+
+/* أخطاء الإدخال */
+#name-error, 
+#email-error, 
+#number-error, 
+#pass-error,
+#form-error {
+    display: none;
+    font-size: 0.75rem;
+    color: #e05252 !important;
+}
+
+/* الزر المطابق لزر EXPLORE NOW في الصورة */
+.luxury-btn {
+    background: linear-gradient(135deg, #a8833e, #6e5223);
+    color: #ffffff;
+    border: 1px solid var(--gold-primary);
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.luxury-btn:hover {
+    background: linear-gradient(135deg, #c5a059, #8f6c32);
+    border-color: #ffd885;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+}
+
+/* زر الساعة التفاعلي داخل الحقل */
+.watch-toggle-btn {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    z-index: 5;
+}
+
+/* رسم الساعة الذهبي */
+.watch-svg {
+    fill: none;
+    stroke: var(--gold-primary, #c5a059);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: all 0.3s ease;
+}
+
+.watch-svg .watch-center-point {
+    fill: var(--gold-primary, #c5a059);
+}
+
+/* علامات الأرقام: مخفية في الوضع العادي */
+.watch-ticks {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* حالة النشاط (عند إظهار كلمة المرور): تظهر علامات الأرقام ويزداد التوهج الذهبي */
+.watch-toggle-btn.active .watch-ticks {
+    opacity: 1;
+}
+
+.watch-toggle-btn.active .watch-svg {
+    stroke: #ffd885;
+    filter: drop-shadow(0 0 5px rgba(223, 183, 108, 0.6));
+}
+
+.watch-toggle-btn:hover .watch-svg {
+    stroke: var(--gold-hover, #dfb76c);
+}
+.rolex-mini {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+    }
+
+    /* تصغير حجم التاج */
+    .rolex-mini .crown {
+        width: 32px;
+        height: auto;
+        fill: #C39B54; /* ذهبي رولكس */
+    }
+
+    /* تصغير حجم الخط وضبطه مع الحجم الجديد */
+    .rolex-mini .text {
+        color: #C39B54;
+        font-family: 'Times New Roman', serif;
+        font-size: 15px;
+        font-weight: bold;
+        letter-spacing: 4px;
+        margin-right: -4px; /* لضبط التوسيط مع الـ letter-spacing */
+    }

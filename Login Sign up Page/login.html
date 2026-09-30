@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolex - Client Login</title>
+    <!-- خطوط الفخامة -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Assests/css/bootstrap.css">
+    <link rel="stylesheet" href="Assests/css/login.css">
+</head>
+
+<body class="bg-black text-light">
+
+    <div class="container-fluid min-vh-100 p-0">
+        <div class="row g-0 min-vh-100">
+
+            <!-- النصف الأيسر: صورة الهيرو الفخمة بدون تكرار وتختفي على الموبايل -->
+            <div class="col-md-6 d-none d-md-block p-0 bg-image-col">
+                <div class="image-overlay w-100 h-100"></div>
+            </div>
+
+            <!-- النصف الأيمن: نموذج الدخول -->
+            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center p-4 form-section">
+
+                <div id="info" class="p-4 p-md-5 rounded-4">
+
+                    <!-- الترويسة -->
+                    <div class="text-center mb-4">
+                        <span class="luxury-subtitle"><a href="../Home%20Page/index.html" style="text-decoration:none;"><div class="rolex-mini">
+    <svg class="crown" viewBox="0 0 100 75" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="26" r="5" />
+        <circle cx="29" cy="13" r="5.5" />
+        <circle cx="50" cy="8" r="6" />
+        <circle cx="71" cy="13" r="5.5" />
+        <circle cx="92" cy="26" r="5" />
+        <path d="M 8,26 L 24,56 L 29,13 L 39,55 L 50,8 L 61,55 L 71,13 L 76,56 L 92,26 C 86,52 70,61 50,61 C 30,61 14,52 8,26 Z" />
+        <path d="M 23,65 C 23,61 77,61 77,65 C 77,69 23,69 23,65 Z" />
+    </svg>
+    <span class="text">ROLEX</span>
+</div></a></span>
+                        <h2 class="luxury-title mt-1">CLIENT LOGIN</h2>
+                    </div>
+
+                    <form action="" novalidate id="login-form">
+
+                        <!-- حقل البريد الإلكتروني -->
+                        <div id="email-div" class="mb-3">
+                            <label for="login-email" class="form-label luxury-label">Email Address</label>
+                            <input type="email" id="login-email" placeholder="name@example.com"
+                                class="form-control luxury-input">
+
+                        </div>
+
+                        <!-- حقل كلمة المرور مع أيقونة الساعة -->
+                        <div id="pass-div" class="mb-3">
+                            <label for="login-pass" class="form-label luxury-label">Password</label>
+                            <div class="position-relative d-flex align-items-center">
+                                <input type="password" id="login-pass" placeholder="letters@numbers"
+                                    class="form-control luxury-input pe-5">
+
+                                <button type="button" id="togglePassBtn" class="watch-toggle-btn"
+                                    aria-label="Toggle password visibility">
+                                    <svg id="watchIcon" viewBox="0 0 24 24" width="22" height="22" class="watch-svg">
+                                        <circle cx="12" cy="12" r="9" class="watch-rim" />
+                                        <g class="watch-ticks">
+                                            <line x1="12" y1="4.5" x2="12" y2="6.5" />
+                                            <line x1="19.5" y1="12" x2="17.5" y2="12" />
+                                            <line x1="12" y1="19.5" x2="12" y2="17.5" />
+                                            <line x1="4.5" y1="12" x2="6.5" y2="12" />
+                                        </g>
+                                        <circle cx="12" cy="12" r="1.2" class="watch-center-point" />
+                                        <line x1="12" y1="12" x2="12" y2="7.5" class="watch-hand hand-hour" />
+                                        <line x1="12" y1="12" x2="15.5" y2="12" class="watch-hand hand-minute" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- تذكرني + استرجاع كلمة المرور -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input luxury-check" type="checkbox" id="rememberMe">
+                                <label class="form-check-label small gold-link" for="rememberMe">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="#" class="gold-link small text-decoration-none">Forgot Password?</a>
+                        </div>
+
+                        <!-- زر تسجيل الدخول الذهبي -->
+                        <button type="submit" class="btn luxury-btn w-100 py-2 mb-3">SIGN IN</button>
+                        <p id="form-error" class="text-danger small mt-1">You have entered at least one of your information incorrectly. Please try again.</p>
+                        <!-- رابط الانتقال لإنشاء حساب -->
+                        <div class="text-center mt-3">
+                            <p class="luxury-title mt-0">Don't have an account?<a href="signup.html" class=" gold-link small text-decoration-none ms-1 fw-bold">Create
+                                Account</a></p>
+                            
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="Assests/js/login.js"></script>
+</body>
+
+</html>

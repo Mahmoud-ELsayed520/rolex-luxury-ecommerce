@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolex — Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../css/shared.css">
+    <style>
+        .cart-table { width: 100%; border-collapse: collapse; }
+        .cart-table th { text-align: left; padding: 1rem 0.75rem; border-bottom: 1px solid var(--border-color); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; }
+        .cart-table td { padding: 1rem 0.75rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        .cart-table img { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; }
+        .cart-product { display: flex; align-items: center; gap: 1rem; }
+        .cart-product-name { font-weight: 600; font-size: 1rem; }
+        .cart-product-id { font-size: 0.8rem; color: var(--text-muted); }
+        .cart-price { color: var(--gold); font-weight: 600; }
+        .qty-control { display: inline-flex; align-items: center; border: 1px solid var(--border-color); }
+        .qty-control button { width: 2rem; height: 2rem; background: transparent; border: none; color: var(--text-color); font-size: 1.1rem; cursor: pointer; transition: color 0.3s; }
+        .qty-control button:hover:not(:disabled) { color: var(--gold); }
+        .qty-control button:disabled { opacity: 0.35; cursor: not-allowed; }
+        .qty-control span { min-width: 2.2rem; text-align: center; font-size: 0.95rem; }
+        .remove-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; transition: color 0.3s; }
+        .remove-btn:hover { color: #e05252; }
+        .cart-summary { background: var(--bg-surface); border: 1px solid var(--border-color); padding: 2rem; margin-top: 2rem; max-width: 420px; margin-left: auto; }
+        .cart-summary h3 { font-family: var(--heading-font); font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; }
+        .summary-row { display: flex; justify-content: space-between; padding: 0.6rem 0; font-size: 1rem; color: #ccc; }
+        .summary-row.total { border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 0.5rem; }
+        .summary-row.total span:last-child { color: var(--gold); font-size: 1.5rem; font-weight: 600; }
+        .cart-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .cart-actions .btn { flex: 1; min-width: 140px; text-align: center; }
+        @media (max-width: 768px) {
+            .hide-mobile { display: none; }
+            .cart-table td, .cart-table th { padding: 0.75rem 0.5rem; }
+            .cart-product-name { font-size: 0.9rem; }
+            .cart-table img { width: 56px; height: 56px; }
+            .cart-summary { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="../Home Page/index.html" class="logo-content flex">
+                <i class='bx bx-crown bx-flip-horizontal logo-icon'></i>
+                <span class="logo-text">ROLEX</span>
+            </a>
+            <div class="menu-content">
+                <ul class="menu-list flex">
+                    <li><a href="../Home Page/index.html" class="nav-link">HOME</a></li>
+                    <li><a href="../Home Page/index.html#collection" class="nav-link">COLLECTION</a></li>
+                    <li><a href="orders.html" class="nav-link">MY ORDERS</a></li>
+                    <li><a href="wallet.html" class="nav-link">WALLET</a></li>
+                </ul>
+                <i class='bx bx-x navClose-btn' role="button" aria-label="Close menu"></i>
+            </div>
+            <div class="contact-content flex">
+                <a href="#" aria-label="Account"><i class='bx bx-user user-icon'></i></a>
+                <a href="cart.html" class="cart-link" aria-label="Cart"><i class='bx bx-cart-alt cart-icon'></i><span class="cart-count" aria-live="polite">0</span></a>
+            </div>
+            <i class='bx bx-menu navOpen' role="button" aria-label="Open menu"></i>
+        </nav>
+    </header>
+
+    <main class="page-wrapper">
+        <h1 class="page-title">Your Cart</h1>
+        <div id="cartContent"></div>
+    </main>
+
+    <section class="section footer" id="footer"></section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+    (function() {
+        var cart = loadCart();
+        var container = document.getElementById('cartContent');
+
+        function render() {
+            cart = loadCart();
+            if (cart.length === 0) {
+                container.innerHTML =
+                    '<div class="empty-state">' +
+                        '<i class="bx bx-cart"></i>' +
+                        '<h3>Your cart is empty</h3>' +
+                        '<p>Watches you add will appear here.</p>' +
+                        '<a href="../Home Page/index.html#collection" class="btn btn-gold">Explore Collection</a>' +
+                    '</div>';
+                updateCartBadge();
+                return;
+            }
+
+            var html = '<table class="cart-table"><thead><tr>' +
+                '<th>Product</th><th class="hide-mobile">Price</th><th>Qty</th><th class="hide-mobile">Total</th><th></th>' +
+                '</tr></thead><tbody>';
+
+            cart.forEach(function(item) {
+                html += '<tr>' +
+                    '<td><div class="cart-product"><img src="' + escapeHtml(getProductImagePath(item.img)) + '" alt="' + escapeHtml(item.name) + '"><div><div class="cart-product-name">' + escapeHtml(item.name) + '</div><div class="cart-product-id">' + escapeHtml(item.id) + '</div></div></div></td>' +
+                    '<td class="hide-mobile cart-price">' + money.format(item.price) + '</td>' +
+                    '<td><div class="qty-control"><button type="button" data-action="dec" data-id="' + escapeHtml(item.id) + '"' + (item.qty <= 1 ? ' disabled' : '') + '>&minus;</button><span>' + item.qty + '</span><button type="button" data-action="inc" data-id="' + escapeHtml(item.id) + '">+</button></div></td>' +
+                    '<td class="hide-mobile cart-price">' + money.format(item.price * item.qty) + '</td>' +
+                    '<td><button type="button" class="remove-btn" data-action="remove" data-id="' + escapeHtml(item.id) + '" aria-label="Remove"><i class="bx bx-trash"></i></button></td>' +
+                    '</tr>';
+            });
+
+            html += '</tbody></table>';
+
+            var total = getCartTotal(cart);
+            html += '<div class="cart-summary">' +
+                '<h3>Order Summary</h3>' +
+                '<div class="summary-row"><span>Subtotal</span><span aria-live="polite">' + money.format(total) + '</span></div>' +
+                '<div class="summary-row"><span>Shipping</span><span>Free</span></div>' +
+                '<div class="summary-row total"><span>Total</span><span aria-live="polite">' + money.format(total) + '</span></div>' +
+                '<div class="cart-actions">' +
+                    '<a href="../Home Page/index.html#collection" class="btn btn-gold">Continue Shopping</a>' +
+                    '<a href="checkout.html" class="btn btn-gold btn-gold-filled">Proceed to Checkout</a>' +
+                '</div></div>';
+
+            container.innerHTML = html;
+            updateCartBadge();
+        }
+
+        container.addEventListener('click', function(e) {
+            var btn = e.target.closest('[data-action]');
+            if (!btn) return;
+            var id = btn.dataset.id;
+            var action = btn.dataset.action;
+            var item = cart.find(function(i) { return i.id === id; });
+            if (!item) return;
+
+            if (action === 'inc') item.qty = Math.min(item.qty + 1, 99);
+            if (action === 'dec') item.qty = Math.max(item.qty - 1, 1);
+            if (action === 'remove') cart = cart.filter(function(i) { return i !== item; });
+
+            saveCart(cart);
+            render();
+        });
+
+        render();
+
+        // mobile menu
+        var navOpen = document.querySelector('.navOpen');
+        var navClose = document.querySelector('.navClose-btn');
+        var menuContent = document.querySelector('.menu-content');
+        if (navOpen) navOpen.addEventListener('click', function() { menuContent.classList.add('open'); });
+        if (navClose) navClose.addEventListener('click', function() { menuContent.classList.remove('open'); });
+
+        initSharedUI();
+    })();
+    </script>
+</body>
+</html>

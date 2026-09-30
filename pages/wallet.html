@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolex — My Wallet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../css/shared.css">
+    <style>
+        .wallet-balance-card { background: linear-gradient(135deg, #1a1508 0%, #0b0b0b 60%); border: 1px solid var(--gold); border-radius: 12px; padding: 2.5rem; margin-bottom: 2rem; text-align: center; }
+        .wallet-label { font-size: 0.85rem; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+        .wallet-amount { font-family: var(--heading-font); font-size: 3.5rem; font-weight: 700; color: var(--gold); }
+        .wallet-user { font-size: 0.9rem; color: #ccc; margin-top: 0.5rem; }
+        .wallet-actions { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .tx-list { margin-top: 1rem; }
+        .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+        .tx-info { flex: 1; }
+        .tx-desc { font-weight: 600; font-size: 0.95rem; }
+        .tx-date { font-size: 0.8rem; color: var(--text-muted); }
+        .tx-amount { font-weight: 600; font-size: 1.1rem; white-space: nowrap; }
+        .tx-credit { color: #27c950; }
+        .tx-debit { color: #e05252; }
+        .tx-icon { width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.1rem; flex-shrink: 0; }
+        .tx-icon.credit { background: rgba(39,201,80,0.1); color: #27c950; }
+        .tx-icon.debit { background: rgba(224,82,82,0.1); color: #e05252; }
+        .section-title { font-family: var(--heading-font); font-size: 1.5rem; font-weight: 600; margin: 2rem 0 1rem; }
+        /* Add funds modal */
+        .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: var(--bg-dark); border: 1px solid var(--gold); padding: 2rem; width: 100%; max-width: 400px; margin: 1rem; }
+        .modal-box h3 { font-family: var(--heading-font); font-size: 1.5rem; margin-bottom: 1rem; }
+        .modal-box input { width: 100%; padding: 0.7rem; background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-color); font-size: 1.2rem; margin-bottom: 1rem; }
+        .modal-box input:focus { outline: none; border-color: var(--gold); }
+        @media (max-width: 576px) {
+            .wallet-amount { font-size: 2.5rem; }
+            .wallet-balance-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="../Home Page/index.html" class="logo-content flex">
+                <i class='bx bx-crown bx-flip-horizontal logo-icon'></i>
+                <span class="logo-text">ROLEX</span>
+            </a>
+            <div class="menu-content">
+                <ul class="menu-list flex">
+                    <li><a href="../Home Page/index.html" class="nav-link">HOME</a></li>
+                    <li><a href="../Home Page/index.html#collection" class="nav-link">COLLECTION</a></li>
+                    <li><a href="orders.html" class="nav-link">MY ORDERS</a></li>
+                    <li><a href="wallet.html" class="nav-link active">WALLET</a></li>
+                </ul>
+                <i class='bx bx-x navClose-btn' role="button" aria-label="Close menu"></i>
+            </div>
+            <div class="contact-content flex">
+                <a href="#" aria-label="Account"><i class='bx bx-user user-icon'></i></a>
+                <a href="cart.html" class="cart-link" aria-label="Cart"><i class='bx bx-cart-alt cart-icon'></i><span class="cart-count" aria-live="polite">0</span></a>
+            </div>
+            <i class='bx bx-menu navOpen' role="button" aria-label="Open menu"></i>
+        </nav>
+    </header>
+
+    <main class="page-wrapper">
+        <h1 class="page-title">My Wallet</h1>
+        <div id="walletContent"></div>
+    </main>
+
+    <!-- Add funds modal -->
+    <div class="modal-overlay" id="addFundsModal">
+        <div class="modal-box">
+            <h3>Add Funds</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">This is a demo. Enter an amount to simulate adding funds.</p>
+            <input type="number" id="fundAmount" min="1" max="99999" placeholder="Amount in USD">
+            <div style="display:flex; gap:1rem;">
+                <button class="btn btn-gold btn-gold-filled" id="confirmFund" style="flex:1;">Add</button>
+                <button class="btn btn-gold" id="cancelFund" style="flex:1;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="section footer" id="footer"></section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+    (function() {
+        var container = document.getElementById('walletContent');
+        var bp = basePath();
+
+        if (!isLoggedIn()) {
+            container.innerHTML =
+                '<div class="empty-state">' +
+                    '<i class="bx bx-lock"></i>' +
+                    '<h3>Sign in to access your wallet</h3>' +
+                    '<p>Your wallet is tied to your account.</p>' +
+                    '<a href="' + bp + 'Login Sign up Page/login.html?returnUrl=' + encodeURIComponent(window.location.href) + '" class="btn btn-gold btn-gold-filled">Sign In</a>' +
+                '</div>';
+            initSharedUI();
+            initMobileMenu();
+            return;
+        }
+
+        function render() {
+            var user = getCurrentUser();
+            var wallet = getWallet();
+
+            var html = '<div class="wallet-balance-card">';
+            html += '<div class="wallet-label">Available Balance</div>';
+            html += '<div class="wallet-amount">' + money.format(wallet.balance) + '</div>';
+            html += '<div class="wallet-user">' + escapeHtml(user.name) + ' · ' + escapeHtml(user.email) + '</div>';
+            html += '<div class="wallet-actions">';
+            html += '<button class="btn btn-gold btn-gold-filled" id="addFundsBtn"><i class="bx bx-plus"></i> Add Funds</button>';
+            html += '</div></div>';
+
+            html += '<h3 class="section-title">Transaction History</h3>';
+
+            if (!wallet.transactions || wallet.transactions.length === 0) {
+                html += '<p style="color:var(--text-muted); text-align:center; padding:2rem;">No transactions yet.</p>';
+            } else {
+                html += '<div class="tx-list">';
+                wallet.transactions.forEach(function(tx) {
+                    var isCredit = tx.type === 'credit';
+                    var iconClass = isCredit ? 'credit' : 'debit';
+                    var amountClass = isCredit ? 'tx-credit' : 'tx-debit';
+                    var sign = isCredit ? '+' : '-';
+                    var icon = isCredit ? 'bx-plus' : 'bx-minus';
+                    var dateStr = tx.date ? new Date(tx.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+                    html += '<div class="tx-item">';
+                    html += '<div class="tx-icon ' + iconClass + '"><i class="bx ' + icon + '"></i></div>';
+                    html += '<div class="tx-info"><div class="tx-desc">' + escapeHtml(tx.description || 'Transaction') + '</div><div class="tx-date">' + dateStr + '</div></div>';
+                    html += '<div class="tx-amount ' + amountClass + '">' + sign + money.format(tx.amount) + '</div>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
+
+            // Re-bind add funds button
+            var addBtn = document.getElementById('addFundsBtn');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    document.getElementById('addFundsModal').classList.add('open');
+                    document.getElementById('fundAmount').value = '';
+                    document.getElementById('fundAmount').focus();
+                });
+            }
+        }
+
+        render();
+
+        // Add funds modal
+        document.getElementById('confirmFund').addEventListener('click', function() {
+            var amount = parseFloat(document.getElementById('fundAmount').value);
+            if (!amount || amount <= 0) return;
+            walletCredit(amount, 'Funds added');
+            document.getElementById('addFundsModal').classList.remove('open');
+            render();
+        });
+
+        document.getElementById('cancelFund').addEventListener('click', function() {
+            document.getElementById('addFundsModal').classList.remove('open');
+        });
+
+        document.getElementById('addFundsModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('open');
+        });
+
+        initMobileMenu();
+        initSharedUI();
+    })();
+
+    function initMobileMenu() {
+        var navOpen = document.querySelector('.navOpen');
+        var navClose = document.querySelector('.navClose-btn');
+        var menuContent = document.querySelector('.menu-content');
+        if (navOpen) navOpen.addEventListener('click', function() { menuContent.classList.add('open'); });
+        if (navClose) navClose.addEventListener('click', function() { menuContent.classList.remove('open'); });
+    }
+    </script>
+</body>
+</html>
